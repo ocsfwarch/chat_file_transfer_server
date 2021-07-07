@@ -40,7 +40,7 @@ filesRouter.route("/view/:filename").get(controller.view).all(methodNotAllowed);
 // Standart POST route for uploading a file to the server storage
 filesRouter
   .route("/upload")
-  .post(uploadMulter.single("file"), controller.upload)
+  .post(uploadMulter.array("file"), controller.upload)
   .all(methodNotAllowed);
 
 module.exports = filesRouter;

@@ -17,14 +17,14 @@ async function list(_, res) {
 
 async function upload(req, res) {
   console.log(`Processing upload`);
-  for (let x in req.file) {
-    console.log(`x = ${x}, val = ${req.file[x]}`);
-  }
-  if (!req.file) {
-    console.log(`file = ${req.files}`);
-    res.json({ results: `Success file was not posted` });
+  //for (let x in req.files) {
+  //  console.log(`x = ${x}, val = ${req.file[x]}`);
+  //}
+  if (!req.files) {
+    //console.log(`file = ${req.files}`);
+    res.json({ results: `Error: file was not posted` });
   } else {
-    res.json({ results: `Success file was posted` });
+    res.json({ results: `Success: ${req.files.length} file(s) were posted` });
   }
 }
 
