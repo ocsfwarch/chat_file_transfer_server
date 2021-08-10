@@ -1,6 +1,5 @@
 require("dotenv").config();
-
-const { PORT = 5007 } = process.env;
+const { PORT } = process.env;
 
 const app = require("./app");
 
