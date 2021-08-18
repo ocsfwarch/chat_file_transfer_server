@@ -2,9 +2,10 @@
  * Defines the testing for the base case.
  *
  */
-const { expect } = require("chai");
-const supertest = require("supertest");
 const app = require("../src/app");
+var request = require("supertest")(app);
+const { API_TOKEN } = require("../src/config");
+const { expect } = require("chai");
 const testStructure = {
   data: {
     title: "test title",
@@ -13,14 +14,24 @@ const testStructure = {
   },
 };
 
-describe("GET /", () => {
-  it("responds with 404", () => {
-    return supertest(app).get("/").expect(404);
+describe("GET /test", function (done) {
+  it("should require authorization - returns 401", function () {
+    request.get("/test").expect(401, done);
   });
-});
 
-describe("GET /test", () => {
-  it("responds with 200 and a test data structure", () => {
-    return supertest(app).get("/test").expect(200, testStructure);
+  it("responds with 200 and a test data structure", function () {
+    request
+      .get("/test")
+      .set("Authorization", "bearer " + API_TOKEN)
+      .then((response) => {
+        expect(response.statusCode, done).toBe(200);
+      });
+    //.expect(200, testStructure)
+    //.expect("Content-Type", /json/);
+    //.end(function (err, res) {
+    //  if (err) return done(err);
+    //  //res.body.should.be.instanceof(Array);
+    //  done();
+    //});
   });
 });

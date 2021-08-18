@@ -10,16 +10,13 @@ var uploadMulter = multer({ dest: "C:\\temp\\test_uploads\\" });
 const { FILEPATH = "./chat_files" } = process.env;
 
 async function list(_, res) {
-  console.log(`Processing GET request`);
+  //console.log(`Processing GET request`);
   const data = await getFileList(FILEPATH);
   res.json({ data });
 }
 
 async function upload(req, res) {
-  console.log(`Processing upload`);
-  //for (let x in req.files) {
-  //  console.log(`x = ${x}, val = ${req.file[x]}`);
-  //}
+  //console.log(`Processing upload`);
   if (!req.files) {
     //console.log(`file = ${req.files}`);
     res.json({ results: `Error: file was not posted` });
@@ -30,9 +27,9 @@ async function upload(req, res) {
 
 async function download(req, res) {
   const { filename } = req.params;
-  console.log(`FILEPATH = ${FILEPATH}`);
+  //console.log(`FILEPATH = ${FILEPATH}`);
   const path = `${FILEPATH}${filename}`;
-  console.log(`Processing download request for ${path}`);
+  //console.log(`Processing download request for ${path}`);
 
   if (await checkForFile(path)) {
     res.download(path, filename, (err) => {
@@ -59,7 +56,7 @@ async function fileExists(req, res, next) {
 }
 
 async function view(req, res) {
-  console.log(`Running View`);
+  //console.log(`Running View`);
   res.json(res.locals.fileData);
 }
 

@@ -1,25 +1,48 @@
 /**
- * Defines the testing for the base case.
+ * Defines the testing for the file access api
  *
  */
-const { expect } = require("chai");
-const supertest = require("supertest");
+
 const app = require("../src/app");
+var request = require("supertest")(app);
+const { API_TOKEN } = require("../src/config");
+const { expect } = require("chai");
 
-describe("GET /files", () => {
-  it("responds with 200", () => {
-    return supertest(app).get("/files").expect(200);
+describe("GET /files", (done) => {
+  it("GET /files - Should require authorization - returns 401", () => {
+    request.get("/files").then((response) => {
+      expect(response.statusCode, done).toBe(401);
+    });
+  });
+
+  it("GET /files - Uses authorization - returns 200", () => {
+    request
+      .get("/files")
+      .set("Authorization", "bearer " + API_TOKEN)
+      .then((response) => {
+        expect(response.statusCode, done).toBe(200);
+      });
   });
 });
 
-describe("GET /files/view/:filename", () => {
+describe("GET /files/download/:filename", (done) => {
   it("responds with 200", () => {
-    return supertest(app).get("/files/view/test_note_1.txt").expect(200);
+    request
+      .get("/files/download/test_note_1.txt")
+      .set("Authorization", "bearer " + API_TOKEN)
+      .then((response) => {
+        expect(response.statusCode, done).toBe(200);
+      });
   });
 });
 
-describe("GET /files/download/:filename", () => {
+describe("GET /files/view/:filename", (done) => {
   it("responds with 200", () => {
-    return supertest(app).get("/files/download/test_note_1.txt").expect(200);
+    request
+      .get("/files/download/test_note_1.txt")
+      .set("Authorization", "bearer " + API_TOKEN)
+      .then((response) => {
+        expect(response.statusCode, done).toBe(200);
+      });
   });
 });
